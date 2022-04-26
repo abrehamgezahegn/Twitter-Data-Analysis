@@ -80,7 +80,7 @@ class TweetDfExtractor:
         try:
             is_sensitive = [x['possibly_sensitive'] for x in self.tweets_list]
         except KeyError:
-            is_sensitive = None
+            is_sensitive = ' '
 
         return is_sensitive
 
@@ -120,6 +120,12 @@ class TweetDfExtractor:
         
         return location
 
+    def find_lang(self) -> list:
+        """Find lang of tweets.
+        """
+        lang = [item['lang'] for item in self.tweets_list]
+
+        return lang
     
         
         
@@ -159,7 +165,7 @@ if __name__ == "__main__":
     'original_author', 'screen_count', 'followers_count','friends_count','possibly_sensitive', 'hashtags', 'user_mentions', 'place', 'place_coord_boundaries']
     _, tweet_list = read_json("./data/Economic_Twitter_Data.json")
     tweet = TweetDfExtractor(tweet_list)
-    tweet_df = tweet.get_tweet_df() 
+    tweet_df = tweet.get_tweet_df(True) 
 
     # use all defined functions to generate a dataframe with the specified columns above
 

@@ -37,14 +37,16 @@ class Clean_Tweets:
         return df
     
     def convert_to_numbers(self, df:pd.DataFrame)->pd.DataFrame:
-        """
-        convert columns like polarity, subjectivity, retweet_count
-        favorite_count etc to numbers
-        """
-        df["polarity", "subjectivity", "retweet_count", "favorite_count"] = df[["polarity", "subjectivity", "retweet_count", "favorite_count"]].apply(pd.to_numeric)
+        """Convert columns like polarity, subjectivity, favorite_count, retweet_count to numbers."""
+        self.df['polarity'] = pd.to_numeric(
+            df['polarity'], errors='coerce')
+        self.df['retweet_count'] = pd.to_numeric(
+            df['retweet_count'], errors='coerce')
+        self.df['favorite_count'] = pd.to_numeric(
+            df['favorite_count'], errors='coerce')
 
-        
-        return df
+        # self.remove_non_english_tweets(self.df)
+        return self.df
     
     def remove_non_english_tweets(self, df:pd.DataFrame)->pd.DataFrame:
         """
@@ -59,11 +61,11 @@ class Clean_Tweets:
 if __name__ == "__main__":
     tweet_df = pd.read_csv("./processed_tweet_data.csv")
     c = Clean_Tweets(tweet_df)
-    # print(c.df.head())
+    print(c.df.head())
     df = c.drop_unwanted_column(c.df)
-    df = c.convert_to_numbers(df)
     df = c.drop_duplicate(df)
-    df = c.remove_non_english_tweets(df)
+    df = c.convert_to_numbers(df)
     df = c.convert_to_datetime(df)
+    df = c.remove_non_english_tweets(df)
 
     df.to_csv('cleaned_tweet_data.csv', index=False)
