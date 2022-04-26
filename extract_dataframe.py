@@ -75,7 +75,7 @@ class TweetDfExtractor:
         friends_count = [item['user']['followers_count']
                          if 'user' in item else '' for item in self.tweets_list]
         return friends_count
-        
+
     def is_sensitive(self)->list:
         try:
             is_sensitive = [x['possibly_sensitive'] for x in self.tweets_list]
@@ -85,19 +85,34 @@ class TweetDfExtractor:
         return is_sensitive
 
     def find_favourite_count(self)->list:
-        
+        favorite_count = [item['retweeted_status']['favorite_count']
+                          if 'retweeted_status' in item.keys() else 0 for item in self.tweets_list]
+
+        return favorite_count
     
-    # def find_retweet_count(self)->list:
-    #     retweet_count = 
+    def find_retweet_count(self) -> list:
+        """Find retweet count of each tweet.
+        """
+        retweet_count = [item['retweeted_status']['retweet_count']
+                         if 'retweeted_status' in item.keys() else 0 for item in self.tweets_list]
+        return retweet_count
 
-    # def find_hashtags(self)->list:
-    #     hashtags =
+    def find_hashtags(self) -> list:
+        """Find hashtags of each tweet.
+        """
+        hashtags = [item['entities']['hashtags'] if 'entities' in item.keys(
+        ) else '' for item in self.tweets_list]
+        return hashtags
 
-    # def find_mentions(self)->list:
-    #     mentions = 
+    def find_mentions(self) -> list:
+        """Find mentions of each tweet.
+        """
+        mentions = [item['entities']['user_mentions']
+                    if 'entities' in item.keys(
+        ) else '' for item in self.tweets_list]
+        return mentions
 
-
-      def find_location(self)->list:
+    def find_location(self)->list:
         try:
             location = self.tweets_list['user']['location']
         except TypeError:
@@ -114,28 +129,28 @@ class TweetDfExtractor:
         columns = ['created_at', 'source', 'original_text','polarity','subjectivity', 'lang', 'favorite_count', 'retweet_count', 
             'original_author', 'followers_count','friends_count','possibly_sensitive', 'hashtags', 'user_mentions', 'place']
         
-        # created_at = self.find_created_time()
-        # source = self.find_source()
+        created_at = self.find_created_time()
+        source = self.find_source()
         text = self.find_full_text()
         polarity, subjectivity = self.find_sentiments(text)
-        # lang = self.find_lang()
-        # fav_count = self.find_favourite_count()
-        # retweet_count = self.find_retweet_count()
-        # screen_name = self.find_screen_name()
-        # follower_count = self.find_followers_count()
-        # friends_count = self.find_friends_count()
-        # sensitivity = self.is_sensitive()
-        # hashtags = self.find_hashtags()
-        # mentions = self.find_mentions()
-        # location = self.find_location()
-        # data = zip(created_at, source, text, polarity, subjectivity, lang, fav_count, retweet_count, screen_name, follower_count, friends_count, sensitivity, hashtags, mentions, location)
-        # df = pd.DataFrame(data=data, columns=columns)
+        lang = self.find_lang()
+        fav_count = self.find_favourite_count()
+        retweet_count = self.find_retweet_count()
+        screen_name = self.find_screen_name()
+        follower_count = self.find_followers_count()
+        friends_count = self.find_friends_count()
+        sensitivity = self.is_sensitive()
+        hashtags = self.find_hashtags()
+        mentions = self.find_mentions()
+        location = self.find_location()
+        data = zip(created_at, source, text, polarity, subjectivity, lang, fav_count, retweet_count, screen_name, follower_count, friends_count, sensitivity, hashtags, mentions, location)
+        df = pd.DataFrame(data=data, columns=columns)
 
-        # if save:
-        #     df.to_csv('processed_tweet_data.csv', index=False)
-        #     print('File Successfully Saved.!!!')
+        if save:
+            df.to_csv('processed_tweet_data.csv', index=False)
+            print('File Successfully Saved.!!!')
         
-        # return df
+        return df
 
                 
 if __name__ == "__main__":
