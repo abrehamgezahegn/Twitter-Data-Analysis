@@ -56,20 +56,26 @@ class TweetDfExtractor:
        
         created_at = [item['created_at'] for item in self.tweets_list]
         return created_at
-    # def find_source(self)->list:
-    #     source = 
+    def find_source(self)->list:
+        source = [item['source'] for item in self.tweets_list]
 
-    #     return source
+        return source
 
-    # def find_screen_name(self)->list:
-    #     screen_name = 
+    def find_screen_name(self)->list:
+        screen_name = [item['user']['screen_name']
+                       if 'user' in item else '' for item in self.tweets_list]
+        return screen_name
 
-    # def find_followers_count(self)->list:
-    #     followers_count = 
+    def find_followers_count(self)->list:
+        followers_count = [item['user']['followers_count']
+                           if 'user' in item else '' for item in self.tweets_list]
+        return followers_count
 
-    # def find_friends_count(self)->list:
-    #     friends_count = 
-
+    def find_friends_count(self)->list:
+        friends_count = [item['user']['followers_count']
+                         if 'user' in item else '' for item in self.tweets_list]
+        return friends_count
+        
     def is_sensitive(self)->list:
         try:
             is_sensitive = [x['possibly_sensitive'] for x in self.tweets_list]
