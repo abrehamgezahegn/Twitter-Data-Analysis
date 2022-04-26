@@ -51,6 +51,8 @@ class Clean_Tweets:
         remove non english tweets from lang
         """
         
-        df = ----
-        
-        return df
+        self.df = df.query("lang == 'en' ")
+
+        # self.df.to_csv('processed_tweet_data.csv', index=False)
+        # print('File Successfully Saved.!!!')
+        return self.df
