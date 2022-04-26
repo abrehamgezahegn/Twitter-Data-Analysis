@@ -76,11 +76,13 @@ class TweetDfExtractor:
                          if 'user' in item else '' for item in self.tweets_list]
         return friends_count
 
-    def is_sensitive(self)->list:
-        try:
-            is_sensitive = [x['possibly_sensitive'] for x in self.tweets_list]
-        except KeyError:
-            is_sensitive = ' '
+
+
+    def is_sensitive(self) -> list:
+        """Check sensitivity of tweets.
+        """
+        is_sensitive = [data['possibly_sensitive']
+                        if 'possibly_sensitive' in data.keys() else '' for data in self.tweets_list]
 
         return is_sensitive
 
@@ -112,12 +114,13 @@ class TweetDfExtractor:
         ) else '' for item in self.tweets_list]
         return mentions
 
-    def find_location(self)->list:
-        try:
-            location = self.tweets_list['user']['location']
-        except TypeError:
-            location = ''
-        
+    def find_location(self) -> list:
+        """Find location of each tweet.
+        """
+        location = [data['user']['location']
+                    if 'user' in data.keys(
+        ) else '' for data in self.tweets_list]
+
         return location
 
     def find_lang(self) -> list:
@@ -149,7 +152,16 @@ class TweetDfExtractor:
         hashtags = self.find_hashtags()
         mentions = self.find_mentions()
         location = self.find_location()
-        data = zip(created_at, source, text, polarity, subjectivity, lang, fav_count, retweet_count, screen_name, follower_count, friends_count, sensitivity, hashtags, mentions, location)
+
+        items = [created_at,source,text,polarity,lang,fav_count,retweet_count,screen_name,follower_count,friends_count,sensitivity,hashtags,mentions,location]
+        
+        for i,item in enumerate(items):
+            if len(item) == 1:
+                print("empty array: ", i)
+
+        data = zip(created_at, source, text, polarity, subjectivity,
+                   lang, fav_count, retweet_count, screen_name, follower_count,
+                   friends_count, sensitivity, hashtags, mentions, location)
         df = pd.DataFrame(data=data, columns=columns)
 
         if save:
