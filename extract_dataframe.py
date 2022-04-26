@@ -80,7 +80,7 @@ class TweetDfExtractor:
         try:
             is_sensitive = [x['possibly_sensitive'] for x in self.tweets_list]
         except KeyError:
-            is_sensitive = None
+            is_sensitive = ' '
 
         return is_sensitive
 
@@ -120,6 +120,12 @@ class TweetDfExtractor:
         
         return location
 
+    def find_lang(self) -> list:
+        """Find lang of tweets.
+        """
+        lang = [item['lang'] for item in self.tweets_list]
+
+        return lang
     
         
         
