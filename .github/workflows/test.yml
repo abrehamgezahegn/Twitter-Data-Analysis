@@ -11,12 +11,6 @@ jobs:
       - name: Install packages
         run: |
           pip install -r requirements.txt
-      - name: Install unzip
-        run: |
-          sudo apt-get install unzip
-      - name: Unzip
-        run: |
-          unzip ./data/Economic_Twitter_Data.zip
       - name: Run test command
         run: |
           python -m unittest tests.test_extract_dataframe
