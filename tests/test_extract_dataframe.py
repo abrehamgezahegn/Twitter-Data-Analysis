@@ -86,7 +86,7 @@ class TestTweetDfExtractor(unittest.TestCase):
 
 
     def test_find_location(self):
-        self.assertEqual(self.df.find_location(), [' ', '', '', '', ''])
+        self.assertEqual(self.df.find_location(), ['', '', '', '', ''])
 
 
     def test_find_hashtags(self):
