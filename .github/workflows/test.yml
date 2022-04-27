@@ -1,0 +1,22 @@
+name: Run test
+on: [push]
+jobs:
+  run-extract-dataframe-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: "actions/checkout@v3"
+      - uses: "actions/setup-python@v3"
+        with:
+          python-version: "3.10"
+      - name: Install packages
+        run: |
+          pip install -r requirements.txt
+      - name: Install unzip
+        run: |
+          sudo apt-get install unzip
+      - name: Unzip
+        run: |
+          unzip ./data/Economic_Twitter_Data.zip
+      - name: Test with pytest
+        run: |
+          python -m pytest
