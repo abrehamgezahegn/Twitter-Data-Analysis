@@ -17,6 +17,6 @@ jobs:
       - name: Unzip
         run: |
           unzip ./data/Economic_Twitter_Data.zip
-      - name: Test with pytest
+      - name: Run test command
         run: |
           python -m unittest tests.test_extract_dataframe
