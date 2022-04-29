@@ -80,5 +80,5 @@ st.markdown("<p style='padding:10px; background-color:#000000;color:#00ECB9;font
 
 st.title("Data Visualizations")
 wordCloud()
-with st.beta_expander("Show More Graphs"):
+with st.expander("Show More Graphs"):
     stBarChart()
