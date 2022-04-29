@@ -6,7 +6,7 @@ from wordcloud import WordCloud
 import plotly.express as px
 # from add_data import db_execute_fetch
 
-st.set_page_config(page_title="Day 5", layout="wide")
+st.set_page_config(page_title="Dashboard", layout="wide")
 
 def loadData():
     query = "select * from TweetInformation"
@@ -82,3 +82,4 @@ st.title("Data Visualizations")
 wordCloud()
 with st.expander("Show More Graphs"):
     stBarChart()
+
