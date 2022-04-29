@@ -45,6 +45,23 @@ def barChart(data, title, X, Y):
                 order='ascending')), y=f"{Y}:Q"))
     st.altair_chart(msgChart, use_container_width=True)
 
+def langPie():
+    df = loadData()
+    dfLangCount = pd.DataFrame({'Tweet_count': df.groupby(['language'])['clean_text'].count()}).reset_index()
+    dfLangCount["language"] = dfLangCount["language"].astype(str)
+    dfLangCount = dfLangCount.sort_values("Tweet_count", ascending=False)
+    dfLangCount.loc[dfLangCount['Tweet_count'] < 10, 'lang'] = 'Other languages'
+    st.title(" Tweets Language pie chart")
+    fig = px.pie(dfLangCount, values='Tweet_count', names='language', width=500, height=350)
+    fig.update_traces(textposition='inside', textinfo='percent+label')
+
+    colB1, colB2 = st.beta_columns([2.5, 1])
+
+    with colB1:
+        st.plotly_chart(fig)
+    with colB2:
+        st.write(dfLangCount)
+
 
 st.title("Data Display")
 selectHashTag()
