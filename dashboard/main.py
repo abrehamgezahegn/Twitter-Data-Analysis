@@ -3,8 +3,17 @@ import pandas as pd
 import streamlit as st
 import altair as alt
 from wordcloud import WordCloud
+# import matplotlib.pyplot as plt
+from st_aggrid import AgGrid
+
 import plotly.express as px
 # from add_data import db_execute_fetch
+
+import pandas as pd
+import numpy as np
+import altair as alt
+
+
 
 st.set_page_config(page_title="Dashboard", layout="wide")
 
@@ -20,6 +29,10 @@ def selectHashTag():
     if hashTags:
         df = df[np.isin(df, hashTags).any(axis=1)]
         st.write(df)
+
+def original_and_cleaned_text():
+    df = loadData()
+    st.write(df[['original_text', 'clean_text']])
 
 # def selectLocAndAuth():
 #     df = loadData()
@@ -75,6 +88,9 @@ def stBarChart():
 st.title("Data Display")
 selectHashTag()
 
+st.title('Original vs Clean tweet')
+original_and_cleaned_text()
+
 st.markdown("<p style='padding:10px; background-color:#000000;color:#00ECB9;font-size:16px;border-radius:10px;'></p>", unsafe_allow_html=True)
 # selectLocAndAuth()
 
@@ -83,3 +99,12 @@ wordCloud()
 with st.expander("Show More Graphs"):
     stBarChart()
 
+
+
+df = pd.DataFrame(
+     np.random.randn(200, 3),
+     columns=['a', 'b', 'c'])
+
+c = alt.Chart(df).mark_circle().encode(
+     x='a', y='b', size='c', color='c', tooltip=['a', 'b', 'c'])
+st.write(c)
