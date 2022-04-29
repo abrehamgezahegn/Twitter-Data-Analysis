@@ -63,8 +63,38 @@ def langPie():
         st.write(dfLangCount)
 
 
+
+def wordCloud():
+    df = loadData()
+    cleanText = ''
+    for text in df['clean_text']:
+        tokens = str(text).lower().split()
+
+        cleanText += " ".join(tokens) + " "
+
+    wc = WordCloud(width=650, height=450, background_color='white', min_font_size=5).generate(cleanText)
+    st.title("Tweet Text Word Cloud")
+    st.image(wc.to_array())
+
+def stBarChart():
+    df = loadData()
+    dfCount = pd.DataFrame({'Tweet_count': df.groupby(['original_author'])['clean_text'].count()}).reset_index()
+    dfCount["original_author"] = dfCount["original_author"].astype(str)
+    dfCount = dfCount.sort_values("Tweet_count", ascending=False)
+
+    num = st.slider("Select number of Rankings", 0, 50, 5)
+    title = f"Top {num} Ranking By Number of tweets"
+    barChart(dfCount.head(num), title, "original_author", "Tweet_count")
+
+
 st.title("Data Display")
 selectHashTag()
 
 st.markdown("<p style='padding:10px; background-color:#000000;color:#00ECB9;font-size:16px;border-radius:10px;'>Section Break</p>", unsafe_allow_html=True)
 selectLocAndAuth()
+
+st.title("Data Visualizations")
+wordCloud()
+with st.beta_expander("Show More Graphs"):
+    stBarChart()
+    langPie()
