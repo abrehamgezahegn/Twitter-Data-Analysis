@@ -38,6 +38,14 @@ def selectLocAndAuth():
     else:
         st.write(df)
 
+def barChart(data, title, X, Y):
+    title = title.title()
+    st.title(f'{title} Chart')
+    msgChart = (alt.Chart(data).mark_bar().encode(alt.X(f"{X}:N", sort=alt.EncodingSortField(field=f"{Y}", op="values",
+                order='ascending')), y=f"{Y}:Q"))
+    st.altair_chart(msgChart, use_container_width=True)
+
+
 st.title("Data Display")
 selectHashTag()
 
